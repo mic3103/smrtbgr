@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart City Bogor - Harmoni Alam & Inovasi</title>
+    <!-- Google Fonts: Cinzel & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- RESET & VARIABLES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-white: #FFFFFF;
+            --primary-green: #00C465;
+            --primary-green-dark: #009e50;
+            --primary-blue: #00B6DA;
+            --primary-blue-dark: #0093B0;
+            --text-dark: #0F172A;
+            --text-muted: #475569;
+            --bg-light: #F8FAFC;
+            --radius-pill: 99px;
+            --radius-card: 20px;
+            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--primary-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* --- CONTAINER --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            font-size: 1rem;
+        }
+
+        /* --- STICKY TRANSPARENT NAVBAR --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 24px 0;
+            background: transparent;
+            transition: var(--transition-smooth);
+        }
+
+        header.scrolled {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+            padding: 16px 0;
+        }
+
+        header.scrolled .logo, header.scrolled .nav-links a {
+            color: var(--text-dark);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cinzel', serif;
+            color: var(--primary-white);
+            font-size: 1.4rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            transition: var(--transition-smooth);
+        }
+
+        .logo span {
+            color: var(--primary-green);
+            font-weight: 700;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--primary-white);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition-smooth);
+            opacity: 0.85;
+            position: relative;
+            padding: 4px 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-green);
+            transition: var(--transition-smooth);
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+            color: var(--primary-green) !important;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* --- HERO SECTION (RATA KIRI FIX SESUAI SCREENSHOT) --- */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            color: var(--primary-white);
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 20%, rgba(0, 74, 35, 0.8) 100%), 
+                        url('./asset/20240827013052_1.jpg') no-repeat center center/cover;
+            padding-top: 80px;
+        }
+
+        .hero .container {
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .hero-content {
+            max-width: 750px;
+            text-align: left;
+            margin-left: 0;
+            margin-right: auto;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hero h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3.8rem;
+            font-weight: 400;
+            line-height: 1.15;
+            margin-bottom: 24px;
+            letter-spacing: 1px;
+            text-align: left;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 40px;
+            font-weight: 400;
+            color: #E2E8F0;
+            text-align: left;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: flex-start;
+            gap: 16px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 36px;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            border: none;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-blue {
+            background-color: var(--primary-blue);
+            color: var(--primary-white);
+            box-shadow: 0 4px 14px rgba(0, 182, 218, 0.3);
+        }
+
+        .btn-blue:hover {
+            background-color: var(--primary-blue-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 182, 218, 0.4);
+        }
+
+        .btn-green {
+            background-color: var(--primary-green);
+            color: var(--primary-white);
+            box-shadow: 0 4px 14px rgba(0, 196, 101, 0.3);
+        }
+
+        .btn-green:hover {
+            background-color: var(--primary-green-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 196, 101, 0.4);
+        }
+
+        /* --- TENTANG BOGOR --- */
+        .tentang {
+            padding: 100px 0;
+            background-color: var(--primary-white);
+        }
+
+        .tentang-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            margin-bottom: 60px;
+        }
+
+        .tentang-left {
+            flex: 1.2;
+        }
+
+        .tentang-left h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .tentang-desc {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .tentang-right {
+            flex: 0.8;
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .tentang-img-wrapper {
+            position: relative;
+            z-index: 2;
+            border-radius: var(--radius-card);
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            width: 100%;
+            max-width: 380px;
+            height: 280px;
+        }
+
+        .tentang-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-smooth);
+        }
+
+        .tentang-img-wrapper:hover .tentang-img {
+            transform: scale(1.05);
+        }
+
+        .tentang-right::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: linear-gradient(135deg, rgba(0, 196, 101, 0.15), rgba(0, 182, 218, 0.15));
+            border-radius: 50%;
+            filter: blur(40px);
+            z-index: 1;
+            top: -10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            background-color: var(--bg-light);
+            padding: 24px;
+            border-radius: var(--radius-card);
+            border: 1px solid rgba(0,0,0,0.02);
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--primary-green);
+        }
+
+        .stat-card:nth-child(even)::before {
+            background-color: var(--primary-blue);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            background-color: var(--primary-white);
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.04);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        /* --- BUDAYA & TRADISI --- */
+        .budaya {
+            padding: 100px 0;
+            background-color: var(--bg-light);
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: 45% 1fr;
+            gap: 24px;
+        }
+
+        .news-item {
+            display: block;
+        }
+
+        .news-item.featured {
+            grid-column: 1;
+            grid-row: span 3;
+        }
+
+        .news-card {
+            background: var(--primary-white);
+            border-radius: var(--radius-card);
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.02);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            transition: var(--transition-smooth);
+            border: 1px solid rgba(15, 23, 42, 0.03);
+            will-change: transform, box-shadow;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .news-item.side-item .news-card {
+            flex-direction: row;
+        }
+
+        .news-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 30px rgba(15, 23, 42, 0.06);
+        }
+
+        .news-img-box {
+            overflow: hidden;
+            position: relative;
+            background-color: #0F172A;
+            flex-shrink: 0;
+        }
+
+        .news-item.featured .news-img-box {
+            width: 100%;
+            height: 340px;
+        }
+
+        .news-item.side-item .news-img-box {
+            width: 180px;
+            height: 100%;
+            min-height: 150px;
+        }
+
+        .news-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: var(--transition-smooth);
+            will-change: transform;
+        }
+
+        .news-card:hover .news-img {
+            transform: scale(1.03);
+        }
+
+        .news-content {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: center;
+        }
+
+        .news-item.side-item .news-content {
+            padding: 16px 24px;
+        }
+
+        .news-tag {
+            color: var(--primary-blue);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .news-title {
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.4;
+            color: var(--text-dark);
+        }
+
+        .news-item.featured .news-title {
+            font-size: 1.5rem;
+        }
+
+        .news-item.side-item .news-title {
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .news-excerpt {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 14px;
+        }
+
+        .news-item.side-item .news-excerpt {
+            margin-bottom: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .news-link {
+            margin-top: auto;
+            color: var(--primary-green);
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition-smooth);
+        }
+
+        .news-link:hover {
+            gap: 10px;
+        }
+
+        /* --- KULINER --- */
+        .kuliner {
+            padding: 100px 0;
+            background-color: var(--primary-white);
+        }
+
+        .kuliner-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .kuliner-card {
+            position: relative;
+            border-radius: var(--radius-card);
+            overflow: hidden;
+            height: 300px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+        }
+
+        .kuliner-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .kuliner-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.3) 60%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+            color: var(--primary-white);
+            transition: var(--transition-smooth);
+        }
+
+        .kuliner-card:hover .kuliner-img {
+            transform: scale(1.08);
+        }
+
+        .kuliner-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .kuliner-type {
+            font-size: 0.75rem;
+            color: var(--primary-green);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- TEKNOLOGI --- */
+        .teknologi {
+            padding: 100px 0;
+            background-color: var(--bg-light);
+        }
+
+        .tekno-layout {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .tekno-info {
+            flex: 1.1;
+        }
+
+        .tekno-info h3 {
+            font-size: 2rem;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .tekno-features {
+            margin-top: 32px;
+        }
+
+        .tekno-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 24px;
+            background: var(--primary-white);
+            padding: 20px;
+            border-radius: var(--radius-card);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+            transition: var(--transition-smooth);
+        }
+
+        .tekno-item:hover {
+            transform: translateX(6px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+        }
+
+        .tekno-icon {
+            width: 44px;
+            height: 44px;
+            background-color: rgba(0, 196, 101, 0.08);
+            color: var(--primary-green);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+        }
+
+        .tekno-item:nth-child(even) .tekno-icon {
+            background-color: rgba(0, 182, 218, 0.08);
+            color: var(--primary-blue);
+        }
+
+        .tekno-text h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .tekno-text p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .tekno-visual {
+            flex: 0.9;
+        }
+
+        .tekno-img {
+            width: 100%;
+            border-radius: var(--radius-card);
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.06);
+        }
+
+        /* --- FLOATING ACTION BUTTON --- */
+        .floating-lapor {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            z-index: 999;
+            background: linear-gradient(135deg, var(--primary-blue), #0093B0);
+            color: var(--primary-white);
+            padding: 14px 24px;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 8px 25px rgba(0, 182, 218, 0.4);
+            transition: var(--transition-smooth);
+            animation: pulseGlow 2s infinite;
+        }
+
+        .floating-lapor:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 30px rgba(0, 182, 218, 0.5);
+        }
+
+        .floating-lapor::before {
+            content: '📢';
+            font-size: 1.1rem;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: #0B0F19;
+            color: var(--primary-white);
+            padding: 80px 0 30px 0;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr repeat(2, 1fr);
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-brand h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        .footer-brand p {
+            color: #64748B;
+            max-width: 320px;
+            font-size: 0.95rem;
+        }
+
+        .footer-links h4 {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #94A3B8;
+            transition: var(--transition-smooth);
+            font-size: 0.95rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-green);
+            padding-left: 4px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #1E293B;
+            padding-top: 30px;
+            text-align: center;
+            color: #475569;
+            font-size: 0.9rem;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(0, 182, 218, 0.4); }
+            70% { box-shadow: 0 0 0 12px rgba(0, 182, 218, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 182, 218, 0); }
+        }
+
+        /* --- RESPONSIVE DESIGN --- */
+        @media (max-width: 992px) {
+            .news-grid { grid-template-columns: 1fr; }
+            .news-item.featured { grid-row: span 1; }
+            .news-item.side-item .news-card { flex-direction: column; }
+            .news-item.side-item .news-img-box { width: 100%; height: 200px; }
+            .tentang-wrapper { flex-direction: column; gap: 40px; text-align: center; }
+            .tekno-layout { flex-direction: column; gap: 40px; }
+            .hero h1 { font-size: 3rem; }
+            .kuliner-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .nav-container { justify-content: space-between; }
+            .nav-links { display: none; }
+            .kuliner-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- STICKY NAVBAR -->
+    <header id="main-header">
+        <div class="container nav-container">
+            <div>
+                <img style="width: 50px; height: auto; position: relative; top: 5px;" src="./asset/logo bsc.png" alt="Logo BSC">
+                <a href="#" class="logo">Bogor<span>.</span></a>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="#tentang">Tentang</a></li>
+                <li><a href="#budaya">Budaya</a></li>
+                <li><a href="#kuliner">Kuliner</a></li>
+                <li><a href="#teknologi">Inovasi</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- FLOATING BUTTON LAPOR! -->
+    <a href="https://prod.lapor.go.id/" target="_blank" rel="noopener noreferrer" class="floating-lapor">
+        Layanan Pengaduan
+    </a>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Jelajahi Pesona<br>Kota Bogor</h1>
+                <p>Menelusuri Harmoni Alam, Budaya, dan Inovasi di Kota Hujan.</p>
+                <div class="hero-buttons">
+                    <a href="#tentang" class="btn btn-blue">Profil Bogor</a>
+                    <a href="peta.html" class="btn btn-green">Jelajah Bogor</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TENTANG BOGOR -->
+    <section id="tentang" class="tentang">
+        <div class="container">
+            <div class="tentang-wrapper">
+                <div class="tentang-left">
+                    <h2>Tentang Bogor</h2>
+                    <p class="tentang-desc">
+                        Kota Bogor adalah kota yang terletak di Provinsi Jawa Barat, kira-kira 60 km di selatan Jakarta. Banyak orang menyebut Bogor sebagai “Kota Hujan” karena curah hujannya yang tinggi sepanjang tahun. Kota ini berfungsi sebagai wilayah penyangga ibu kota yang memadukan pesona sejarah, keanekaragaman hayati, dan pusat pendidikan bergengsi di Indonesia.
+                        <br><br>
+                        Saat ini, Bogor memiliki <b>6</b> kecamatan dan <b>68</b> kelurahan. Kota ini juga menjadi salah satu pusat pendidikan, penelitian, pariwisata, dan budaya di Indonesia. Beberapa ciri khas Bogor antara lain Kebun Raya Bogor dan Istana Bogor. Kota ini juga masih memiliki warisan budaya Sunda yang kuat.
+                    </p>
+                </div>
+                <div class="tentang-right">
+                    <div class="tentang-img-wrapper">
+                        <img src="./asset/tugu_kujang_bogor.jpeg" alt="Sudut Kota Bogor" class="tentang-img">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <!-- ELEMEN LIVE CUACA OPEN-METEO -->
+                <div class="stat-card">
+                    <div class="stat-label">Informasi Cuaca</div>
+                    <div id="weather-display" class="stat-value">Memuat data...</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">IPM (Indeks Manusia)</div>
+                    <div class="stat-value">77.74 (Tinggi)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Penduduk</div>
+                    <div class="stat-value">1.118.910 Jiwa</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Ketinggian Wilayah</div>
+                    <div class="stat-value">265 mdpl</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Suku & Budaya Mayoritas</div>
+                    <div class="stat-value">Sunda</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Luas Wilayah</div>
+                    <div class="stat-value">118,5 km²</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BUDAYA & TRADISI -->
+    <section id="budaya" class="budaya">
+        <div class="container">
+            <h2 class="section-title">Seputar Budaya & Tradisi</h2>
+            <p class="section-subtitle">Warisan leluhur yang tetap hidup berdampingan dengan zaman</p>
+            
+            <div class="news-grid">
+                <div class="news-item featured">
+                    <article class="news-card">
+                        <div class="news-img-box">
+                            <img src="./asset/g5QvdcebvwyFzE9dks1GGPfJNeX0I3a1iKpcvvEg (1).jpg" alt="Seni Tari Sunda" class="news-img">
+                        </div>
+                        <div class="news-content">
+                            <span class="news-tag">Kesenian</span>
+                            <h3 class="news-title">Kota Bogor Jadi Tuan Rumah Golok Road to UNESCO</h3>
+                            <p class="news-excerpt">Kota Bogor akan menjadi tuan rumah acara Golok Road to UNESCO, sebuah perayaan yang menghormati warisan budaya dan keberagaman di kota ini.</p>
+                            <a href="https://news.google.com/search?q=Kota%20Bogor%20Jadi%20Tuan%20Rumah%20Golok%20Road%20to%20UNESCO&hl=id&gl=ID&ceid=ID%3Aid" class="news-link">Baca Selengkapnya &rarr;</a>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="news-item side-item">
+                    <article class="news-card">
+                        <div class="news-img-box">
+                            <img src="./asset/images (1).jpg" alt="Bogor Street Festival" class="news-img">
+                        </div>
+                        <div class="news-content">
+                            <span class="news-tag">Tradisi</span>
+                            <h3 class="news-title">Bogor Street Festival Cap Go Meh</h3>
+                            <p class="news-excerpt">Festival tahunan yang memperlihatkan kekayaan budaya Tionghoa di Bogor melalui berbagai perayaan dan pertunjukan.</p>
+                            <a href="https://news.google.com/search?q=Bogor%20Street%20Festival%20Cap%20Go%20Meh&hl=en-ID&gl=ID&ceid=ID%3Aen" class="news-link">Baca &rarr;</a>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="news-item side-item">
+                    <article class="news-card">
+                        <div class="news-img-box">
+                            <img src="https://mediacirebon.id/wp-content/uploads/2026/05/IMG-20260511-WA0008-1024x768.jpg" alt="Kirab Budaya Pajajaran dan Mahkota Binokasih" class="news-img">
+                        </div>
+                        <div class="news-content">
+                            <span class="news-tag">Destinasi</span>
+                            <h3 class="news-title">Kirab Budaya Pajajaran dan Mahkota Binokasih</h3>
+                            <p class="news-excerpt">Perayaan budaya yang memperlihatkan tradisi khas masyarakat Sunda dalam bentuk parade dan pertunjukan seni.</p>
+                            <a href="https://news.google.com/search?q=Kirab+Budaya+Pajajaran+dan+Mahkota+Binokasih&hl=en-ID&gl=ID&ceid=ID%3Aen" class="news-link">Baca &rarr;</a>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="news-item side-item">
+                    <article class="news-card">
+                        <div class="news-img-box">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/Wayang_bambu_karakter.jpg" alt="Wayang Bambu" class="news-img">
+                        </div>
+                        <div class="news-content">
+                            <span class="news-tag">Kerajinan Seni</span>
+                            <h3 class="news-title">Wayang Bambu Khas Bogor</h3>
+                            <p class="news-excerpt">Inovasi seni pertunjukan wayang unik yang memanfaatkan bambu lokal sebagai bahan utama penokohan.</p>
+                            <a href="https://news.google.com/search?q=Wayang%20Bambu%20Khas%20Bogor&hl=id&gl=ID&ceid=ID%3Aid" class="news-link">Baca &rarr;</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- KULINER -->
+    <section id="kuliner" class="kuliner">
+        <div class="container">
+            <h2 class="section-title">Penggugah Selera</h2>
+            <p class="section-subtitle">Petualangan rasa otentik yang wajib dicoba saat berkunjung</p>
+            
+            <div class="kuliner-grid">
+                <div class="kuliner-card">
+                    <img src="https://awsimages.detik.net.id/community/media/visual/2019/09/23/4442dde1-1af0-445f-92e7-f563a7735816.jpeg?w=1232" alt="Soto Kuning" class="kuliner-img">
+                    <div class="kuliner-overlay">
+                        <span class="kuliner-type">Makanan Utama</span>
+                        <h3 class="kuliner-name">Soto Kuning</h3>
+                    </div>
+                </div>
+                <div class="kuliner-card">
+                    <img src="https://www.dapurkobe.co.id/wp-content/uploads/asinan-bogor.jpg" alt="Asinan" class="kuliner-img">
+                    <div class="kuliner-overlay">
+                        <span class="kuliner-type">Camilan Segar</span>
+                        <h3 class="kuliner-name">Asinan Bogor</h3>
+                    </div>
+                </div>
+                <div class="kuliner-card">
+                    <img src="https://www.dapurkobe.co.id/wp-content/uploads/tauge-goreng-bogor-step4.jpg" alt="Toge Goreng" class="kuliner-img">
+                    <div class="kuliner-overlay">
+                        <span class="kuliner-type">Legendaris</span>
+                        <h3 class="kuliner-name">Toge Goreng</h3>
+                    </div>
+                </div>
+                <div class="kuliner-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYIm_u_fClZHgg2Tk17RH5XKL8aX4JlSiEfnjsRPadj42dNgym2W5yRrc&s=10" alt="Roti Unyil" class="kuliner-img">
+                    <div class="kuliner-overlay">
+                        <span class="kuliner-type">Oleh-Oleh</span>
+                        <h3 class="kuliner-name">Roti Unyil</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PERKEMBANGAN TEKNOLOGI -->
+    <section id="teknologi" class="teknologi">
+        <div class="container">
+            <h2 class="section-title">Perkembangan Teknologi</h2>
+            <p class="section-subtitle">Bagaimana inovasi digital mempermudah pelayanan masyarakat kota</p>
+            
+            <div class="tekno-layout">
+                <div class="tekno-info">
+                    <h3>Bogor Menuju Smart City Terdepan</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 0.95rem;">Melalui pemanfaatan Internet of Things (IoT) dan integrasi sistem satu pintu, Pemerintah Kota Bogor menciptakan tata kelola yang transparan.</p>
+                    
+                    <div class="tekno-features">
+                        <div class="tekno-item">
+                            <div class="tekno-icon">01</div>
+                            <div class="tekno-text">
+                                <h4>Bogor Green Room</h4>
+                                <p>Pusat pemantauan lalu lintas dan kebencanaan berbasis data real-time.</p>
+                            </div>
+                        </div>
+                        <div class="tekno-item">
+                            <div class="tekno-icon">02</div>
+                            <div class="tekno-text">
+                                <h4>Aplikasi BisKita</h4>
+                                <p>Integrasi transportasi modern teratur untuk mempermudah mobilitas warga.</p>
+                            </div>
+                        </div>
+                        <div class="tekno-item">
+                            <div class="tekno-icon">03</div>
+                            <div class="tekno-text">
+                                <h4>Layanan e-Kelurahan</h4>
+                                <p>Efisiensi birokrasi surat-menyurat secara digital tanpa antrean fisik.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tekno-visual">
+                    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&/80" alt="Teknologi Command Center" class="tekno-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3>BOGOR<span>.</span></h3>
+                    <p>Membangun masa depan kota berbasis digital tanpa melupakan marwah budaya dan hijaunya semesta.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Navigasi</h4>
+                    <ul>
+                        <li><a href="#tentang">Tentang Bogor</a></li>
+                        <li><a href="#budaya">Budaya & Tradisi</a></li>
+                        <li><a href="#kuliner">Kuliner</a></li>
+                        <li><a href="#teknologi">Inovasi Digital</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Kontak</h4>
+                    <ul>
+                        <li><a href="#">Diskominfo Kota Bogor</a></li>
+                        <li><a href="#">bogorkota.go.id</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Smart City Bogor Project. Semua Hak Dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT -->
+    <script>
+        // 1. Script Sticky Header
+        const header = document.getElementById('main-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // 2. Script Fetching Data Cuaca Open-Meteo
+        async function fetchBogorWeather() {
+            const weatherDisplay = document.getElementById('weather-display');
+            
+            // Koordinat Geografis Resmi Kota Bogor
+            const latitude = -6.5944;
+            const longitude = 106.7892;
+            const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code`;
+
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) throw new Error('Gagal mengambil data cuaca');
+                
+                const data = await response.json();
+                
+                const temperature = Math.round(data.current.temperature_2m);
+                const weatherCode = data.current.weather_code;
+                
+                // Menerjemahkan WMO Weather Code ke Bahasa Indonesia
+                let weatherDescription = "Cerah";
+                if (weatherCode === 0) weatherDescription = "Cerah";
+                else if ([1, 2, 3].includes(weatherCode)) weatherDescription = "Cerah Berawan";
+                else if ([45, 48].includes(weatherCode)) weatherDescription = "Berkabut";
+                else if ([51, 53, 55, 56, 57].includes(weatherCode)) weatherDescription = "Gerimis";
+                else if ([61, 63, 65].includes(weatherCode)) weatherDescription = "Hujan";
+                else if ([80, 81, 82].includes(weatherCode)) weatherDescription = "Hujan Ringan / Sedang";
+                else if ([95, 96, 99].includes(weatherCode)) weatherDescription = "Hujan Badai Berpetir";
+
+                // Update visual pada card info cuaca
+                weatherDisplay.innerHTML = `${temperature}°C - ${weatherDescription}`;
+                
+            } catch (error) {
+                console.error('Error cuaca:', error);
+                weatherDisplay.innerHTML = "Gagal memuat data";
+            }
+        }
+
+        // Jalankan pengambilan data cuaca begitu dokumen selesai dimuat
+        document.addEventListener('DOMContentLoaded', fetchBogorWeather);
+    </script>
+</body>
+</html>

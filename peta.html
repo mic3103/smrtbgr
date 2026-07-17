@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peta Interaktif Wisata Bogor</title>
+    <!-- Google Fonts: Cinzel & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <style>
+        /* --- RESET & BASE STYLES --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #FFFFFF;
+            color: #0F172A;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- HEADER STYLES --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 40px;
+            background-color: #FFFFFF;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            height: 70px;
+        }
+
+        .back-btn {
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #0F172A;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s ease;
+            text-decoration: none;
+        }
+
+        .back-btn:hover {
+            transform: translateX(-3px);
+            color: #00B6DA;
+        }
+
+        .header-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #64748B;
+        }
+
+        .header-logo {
+            width: 45px;
+            height: auto;
+        }
+
+        /* --- MAP CONTAINER SYSTEM --- */
+        main {
+            flex: 1;
+            padding: 24px;
+            background-color: #FFFFFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .map-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            max-width: 1400px;
+            background-color: #CBD5E1; 
+            border-radius: 32px;
+            padding: 16px;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+            border-radius: 24px;
+            z-index: 1;
+        }
+
+        /* --- CUSTOM FLOATING MAP CONTROLS (Kiri) --- */
+        .custom-controls {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .control-btn {
+            width: 46px;
+            height: 46px;
+            background-color: #FFFFFF;
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #334155;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.05);
+            background-color: #F8FAFC;
+        }
+
+        .control-btn.close-btn {
+            font-size: 1.2rem;
+            color: #64748B;
+            margin-top: 8px;
+        }
+
+        /* --- FLOATING SIDEBAR PANEL WITH SEARCH & FILTER (Kanan) --- */
+        .sidebar-panel {
+            position: absolute;
+            top: 32px;
+            right: 32px;
+            bottom: 32px;
+            width: 360px;
+            background-color: #FFFFFF;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            padding: 20px 20px 12px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            border-bottom: 1px solid #F1F5F9;
+            background-color: #FFFFFF;
+        }
+
+        .panel-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-align: center;
+            color: #0F172A;
+        }
+
+        /* Search Input Wrapper */
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 16px 10px 38px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            outline: none;
+            transition: all 0.2s ease;
+            color: #334155;
+        }
+
+        .search-box input:focus {
+            border-color: #00B6DA;
+            box-shadow: 0 0 0 3px rgba(0, 182, 218, 0.15);
+        }
+
+        .search-box::before {
+            content: '🔍';
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.85rem;
+            opacity: 0.6;
+        }
+
+        /* Filter Pills Container */
+        .filter-container {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .filter-container::-webkit-scrollbar {
+            height: 4px;
+        }
+        .filter-container::-webkit-scrollbar-thumb {
+            background-color: #E2E8F0;
+            border-radius: 10px;
+        }
+
+        .filter-pill {
+            padding: 6px 14px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+            background-color: #F1F5F9;
+            color: #64748B;
+            border: none;
+            border-radius: 99px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-pill:hover, .filter-pill.active {
+            background-color: #0F172A;
+            color: #FFFFFF;
+        }
+
+        /* Places List Styles */
+        .places-list {
+            list-style: none;
+            overflow-y: auto;
+            flex: 1;
+            padding: 8px 12px;
+        }
+
+        .places-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .places-list::-webkit-scrollbar-thumb {
+            background-color: #CBD5E1;
+            border-radius: 3px;
+        }
+
+        .place-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 8px;
+            border-bottom: 1px solid #F1F5F9;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: background-color 0.2s ease;
+            position: relative;
+        }
+
+        .place-item:last-child {
+            border-bottom: none;
+        }
+
+        .place-item:hover, .place-item.active {
+            background-color: #F8FAFC;
+        }
+
+        .place-content {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+        }
+
+        .place-thumb {
+            width: 70px;
+            height: 48px;
+            border-radius: 8px;
+            object-fit: cover;
+            background-color: #E2E8F0;
+        }
+
+        .place-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            flex: 1;
+        }
+
+        .place-name {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #0F172A;
+            line-height: 1.2;
+        }
+
+        .place-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            color: #64748B;
+        }
+
+        .place-rating {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .place-rating span {
+            color: #F59E0B;
+        }
+
+        /* Tombol Arah di Sidebar */
+        .direction-btn-sidebar {
+            background-color: #00B6DA;
+            color: #FFFFFF;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .direction-btn-sidebar:hover {
+            background-color: #0094B2;
+            transform: scale(1.05);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 30px 20px;
+            color: #94A3B8;
+            font-size: 0.85rem;
+        }
+
+        /* --- LEAFLET POPUP STYLES --- */
+        .leaflet-popup-content-wrapper {
+            border-radius: 16px;
+            padding: 6px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .popup-card {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 180px;
+        }
+        
+        .popup-card h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #0F172A;
+            margin: 0;
+        }
+        
+        .popup-meta {
+            font-size: 0.75rem;
+            color: #64748B;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .popup-direction-btn {
+            background-color: #0F172A;
+            color: #FFFFFF;
+            text-decoration: none;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+            display: block;
+            margin-top: 4px;
+        }
+
+        .popup-direction-btn:hover {
+            background-color: #334155;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER NAVIGATION -->
+    <header>
+        <a href="index.html" class="back-btn">← Kembali</a>
+        <div class="header-title">PETA INTERAKTIF</div>
+        <img class="header-logo" src="./asset/logo bsc.png" alt="Logo" onerror="this.src='https://placehold.co/50x50?text=Logo'">
+    </header>
+
+    <!-- MAIN INTERACTIVE MAP CONTAINER -->
+    <main>
+        <div class="map-wrapper">
+            
+            <!-- Tombol Kontrol Kiri kustom -->
+            <div class="custom-controls">
+                <button class="control-btn" onclick="zoomIn()">+</button>
+                <button class="control-btn" onclick="zoomOut()">−</button>
+                <button class="control-btn close-btn" onclick="resetMap()">×</button>
+            </div>
+
+            <!-- Tempat Peta Leaflet Berada -->
+            <div id="map"></div>
+
+            <!-- Panel Floating Daftar Wisata Kanan + Fitur Cari & Filter -->
+            <div class="sidebar-panel">
+                <div class="sidebar-header">
+                    <div class="panel-title">Jelajahi Tempat Wisata</div>
+                    
+                    <!-- Search Box Dinamis -->
+                    <div class="search-box">
+                        <input type="text" id="search-input" placeholder="Cari nama tempat wisata..." oninput="filterPlaces()">
+                    </div>
+
+                    <!-- Kategori Filter Pills -->
+                    <div class="filter-container">
+                        <button class="filter-pill active" onclick="setCategory('semua', this)">Semua</button>
+                        <button class="filter-pill" onclick="setCategory('sejarah', this)">Sejarah</button>
+                        <button class="filter-pill" onclick="setCategory('taman', this)">Taman</button>
+                        <button class="filter-pill" onclick="setCategory('kuliner', this)">Kuliner</button>
+                    </div>
+                </div>
+
+                <!-- Kontainer Daftar Hasil -->
+                <ul class="places-list" id="places-list">
+                    <!-- Item akan otomatis digenerate secara real-time oleh JavaScript -->
+                </ul>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Leaflet JS Library -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Data Tempat Wisata Terstruktur (Sudah include Kuliner Surken & Soto Kuning!)
+        const wisataData = [
+            { id: 1, category: "sejarah", name: "Stasiun Bogor", lat: -6.595565769986734, lng: 106.79042532682945, rating: "4,7", img: "https://images.unsplash.com/photo-1596436889106-be35e843f974?auto=format&fit=crop&w=150&q=80" },
+            { id: 2, category: "sejarah", name: "Tugu Kujang Bogor", lat: -6.6014, lng: 106.8048, rating: "4,7", img: "https://images.unsplash.com/photo-1541014741259-df549fa3327e?auto=format&fit=crop&w=150&q=80" },
+            { id: 3, category: "taman", name: "Taman Kencana", lat: -6.5886, lng: 106.8001, rating: "4,5", img: "https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?auto=format&fit=crop&w=150&q=80" },
+            { id: 4, category: "sejarah", name: "Istana Cipanas", lat: -6.7419, lng: 107.0423, rating: "4,7", img: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=150&q=80" },
+            { id: 5, category: "sejarah", name: "Lawang Suryakencana", lat: -6.603255242986939, lng: 106.79891128690254, rating: "4,6", img: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=150&q=80" },
+            { id: 6, category: "sejarah", name: "Museum Zoologi", lat: -6.603492883831059, lng: 106.7969222422461, rating: "4,5", img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=150&q=80" },
+            { id: 7, category: "taman", name: "Kebun Wisata Ilmiah", lat: -6.5925, lng: 106.7915, rating: "4,6", img: "https://images.unsplash.com/photo-1626132647523-66f5bf380027?auto=format&fit=crop&w=150&q=80" },
+            { id: 8, category: "taman", name: "Taman Kaulinan", lat: -6.5891, lng: 106.7998, rating: "4,7", img: "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?auto=format&fit=crop&w=150&q=80" },
+            { id: 9, category: "kuliner", name: "Pusat Kuliner Soto Kuning Pak Yusuf", lat: -6.609849091787497, lng: 106.80406906690702, rating: "4,8", img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=150&q=80" },
+            { id: 10, category: "kuliner", name: "Wisata Kuliner Jl. Suryakencana (Surken)", lat: -6.6039763369647755, lng: 106.79926047531782, rating: "4,9", img: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=150&q=80" }
+        ];
+
+        const bogorCenter = [-6.5944, 106.7892];
+        let activeCategory = 'semua';
+        const markersGroup = L.layerGroup(); 
+        
+        // Inisialisasi Peta
+        const map = L.map('map', { zoomControl: false }).setView(bogorCenter, 13);
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
+        }).addTo(map);
+
+        markersGroup.addTo(map);
+
+        const listContainer = document.getElementById('places-list');
+
+        function setCategory(category, element) {
+            document.querySelectorAll('.filter-pill').forEach(pill => pill.classList.remove('active'));
+            element.classList.add('active');
+            activeCategory = category;
+            filterPlaces(); 
+        }
+
+        // Fungsi Filter & Live Search Utama
+        function filterPlaces() {
+            const searchQuery = document.getElementById('search-input').value.toLowerCase();
+            listContainer.innerHTML = ''; 
+            markersGroup.clearLayers();  
+
+            let itemsFound = 0;
+
+            wisataData.forEach(place => {
+                const matchCategory = (activeCategory === 'semua' || place.category === activeCategory);
+                const matchSearch = place.name.toLowerCase().includes(searchQuery);
+
+                if (matchCategory && matchSearch) {
+                    itemsFound++;
+
+                    // URL Dinamis Google Maps Directions menggunakan koordinat tempat
+                    const gmapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${place.lat},${place.lng}`;
+
+                    // 1. Setup Marker Peta + Tombol Dapatkan Arah di dalam Popup
+                    const marker = L.marker([place.lat, place.lng])
+                        .bindPopup(`
+                            <div class="popup-card">
+                                <h4>${place.name}</h4>
+                                <div class="popup-meta">
+                                    <span>⭐ ${place.rating}</span>
+                                    <span style="text-transform: capitalize; color: #00B6DA;">${place.category}</span>
+                                </div>
+                                <a href="${gmapsUrl}" target="_blank" class="popup-direction-btn">🚗 Dapatkan Arah</a>
+                            </div>
+                        `);
+                    markersGroup.addLayer(marker);
+
+                    // 2. Setup Elemen List dengan Tombol Arah terpisah di sebelah kanan info
+                    const li = document.createElement('li');
+                    li.className = 'place-item';
+                    li.innerHTML = `
+                        <div class="place-content">
+                            <img class="place-thumb" src="${place.img}" alt="${place.name}" onerror="this.src='https://placehold.co/70x48?text=Wisata'">
+                            <div class="place-info">
+                                <span class="place-name">${place.name}</span>
+                                <div class="place-meta">
+                                    <span class="place-rating"><span>★</span> ${place.rating}</span>
+                                    <span>•</span>
+                                    <span style="text-transform: capitalize;">${place.category}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="${gmapsUrl}" target="_blank" class="direction-btn-sidebar" title="Buka rute di Google Maps">Ke Sini</a>
+                    `;
+
+                    // Mencegah trigger flyTo peta jika user murni mengklik tombol "Ke Sini"
+                    li.querySelector('.direction-btn-sidebar').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                    });
+
+                    // Trigger fokus peta jika area list lainnya diklik
+                    li.querySelector('.place-content').addEventListener('click', () => {
+                        document.querySelectorAll('.place-item').forEach(item => item.classList.remove('active'));
+                        li.classList.add('active');
+                        map.flyTo([place.lat, place.lng], 15, { duration: 1.2 });
+                        marker.openPopup();
+                    });
+
+                    listContainer.appendChild(li);
+                }
+            });
+
+            if (itemsFound === 0) {
+                listContainer.innerHTML = `<div class="no-results">Tempat wisata tidak ditemukan...</div>`;
+            }
+        }
+
+        // --- MAP CONTROLS FUNCTIONS ---
+        function zoomIn() { map.zoomIn(); }
+        function zoomOut() { map.zoomOut(); }
+        function resetMap() {
+            map.flyTo(bogorCenter, 13, { duration: 1 });
+            map.closePopup();
+            document.getElementById('search-input').value = '';
+            document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+            document.querySelector('.filter-pill[onclick*="semua"]').classList.add('active');
+            activeCategory = 'semua';
+            filterPlaces();
+        }
+
+        // Inisialisasi awal
+        filterPlaces();
+    </script>
+</body>
+</html>
